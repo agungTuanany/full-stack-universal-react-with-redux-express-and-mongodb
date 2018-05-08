@@ -1,0 +1,11 @@
+# folders
+node_modules
+mongo-data
+.vscode
+libs
+
+# files
+package-lock.json
+server.log
+config.json
+bundle.js
