@@ -56,3 +56,11 @@ store.dispatch({
         description: 'id two change the description'
     }
 })
+
+// -->> CART ACTIONS <<--
+// ADD to cart
+
+store.dispatch({
+    type: "ADD_TO_CART",
+    payload: [{ id: 2 }]
+})
