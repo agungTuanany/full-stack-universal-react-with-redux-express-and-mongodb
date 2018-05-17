@@ -10,6 +10,17 @@ const reducer = (state = { books:[] }, action) => {
         //     return { books };
         return { books: [ ...state.books, ...action.payload ] }
         break;
+        case "DELETE_BOOK":
+        // Create a copy of the current array of books
+        const currentBookToDelete = [...state.books]
+
+        // Determine at which index in books array is the book to be deleted
+        const indexToDelete = currentBookToDelete.findIndex(book => book.id === action.payload.id)
+
+        //use slice to remove the book at the specified index
+        return { books: [...currentBookToDelete.slice(0, indexToDelete),
+            ...currentBookToDelete.slice(indexToDelete + 1)]}
+        break;
     }
     return state
 }
@@ -48,4 +59,10 @@ store.dispatch({
         description: 'this is the third book description',
         price: 33
     }]
+})
+
+// DELETE a book
+store.dispatch({
+    type: "DELETE_BOOK",
+    payload: { id: 1 }
 })
