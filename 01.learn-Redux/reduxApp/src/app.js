@@ -8,6 +8,9 @@ const reducer = (state = 0, action) => {
         case "INCREMENT":
             return state + action.payload;
             break;
+        case "DECREMENT":
+        return state - action.payload;
+        break;
     }
     return state
 }
@@ -22,4 +25,4 @@ store.subscribe(() => {
 // step 2 create and dispatch action
 store.dispatch({ type: "INCREMENT", payload: 1 })
 store.dispatch({ type: "INCREMENT", payload: 1 })
-store.dispatch({ type: "INCREMENT", payload: 1 })
+store.dispatch({ type: "DECREMENT", payload: 1 })
