@@ -1,3 +1,4 @@
+// Index.js for Reducer
 "use strict"
 
 import { combineReducers } from 'redux';

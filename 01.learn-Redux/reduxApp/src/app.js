@@ -27,20 +27,10 @@ render(
     </Provider>,document.getElementById('app')
 );
 
-// step 2 create and dispatch action
-store.dispatch(postBooks(
-    [{
-        id: 1,
-        title: 'this is book title',
-        description: 'this is the book description',
-        price: 55.33
-    }, {
-        id: 2,
-        title: 'this is the second book title',
-        description: 'this is the second book description',
-        price: 66
-    }]
-))
+// // step 2 create and dispatch action
+// store.dispatch(postBooks(
+
+// ))
 
 // // DELETE a book
 // store.dispatch(deleteBooks(
