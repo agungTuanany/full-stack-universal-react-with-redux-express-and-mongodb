@@ -3,7 +3,11 @@
 import { createStore } from 'redux';
 
 // IMPORT COMBINED REDUCERS
-import reducers from './reducers/index'
+import reducers from './reducers/index';
+
+// IMPORT ACTIONS
+import { addToCart } from './actions/cartActions';
+import { postBooks, deleteBooks, updateBooks } from './actions/booksActions';
 
 // Step 1 create the store
 const store = createStore(reducers);
@@ -14,9 +18,8 @@ store.subscribe(() => {
 });
 
 // step 2 create and dispatch action
-store.dispatch({
-    type: "POST_BOOK",
-    payload: [{
+store.dispatch(postBooks(
+    [{
         id: 1,
         title: 'this is book title',
         description: 'this is the book description',
@@ -27,40 +30,23 @@ store.dispatch({
         description: 'this is the second book description',
         price: 66
     }]
-})
-
-// DISPATCH a second time
-// Do not forget to update yur second dispactch to be an array @param payload"[{}]
-store.dispatch({
-    type: "POST_BOOK",
-    payload: [{
-        id: 3,
-        title: 'this is the thrid book title',
-        description: 'this is the third book description',
-        price: 33
-    }]
-})
+))
 
 // DELETE a book
-store.dispatch({
-    type: "DELETE_BOOK",
-    payload: { id: 1 }
-})
+store.dispatch(deleteBooks(
+    { id: 1 }
+))
 
 // UPDATE a book
-store.dispatch({
-    type: "UPDATE_BOOK",
-    payload: {
+store.dispatch(updateBooks(
+    {
         id: 2,
         title: 'THE 24h Redux course',
         description: 'id two change the description'
     }
-})
+))
 
 // -->> CART ACTIONS <<--
 // ADD to cart
 
-store.dispatch({
-    type: "ADD_TO_CART",
-    payload: [{ id: 2 }]
-})
+store.dispatch(addToCart([{ id: 1 }]))
