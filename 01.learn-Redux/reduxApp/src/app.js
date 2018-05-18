@@ -1,5 +1,9 @@
 "user strict"
 
+// IMPORT REACT
+import React from 'react';
+import { render } from 'react-dom';
+
 import { applyMiddleware, createStore } from 'redux';
 import logger from 'redux-logger';
 
@@ -18,6 +22,13 @@ const store = createStore(reducers, middleware);
 //     console.log(`current state is:`, store.getState());
 //     // console.log(`current price:`, store.getState()[1].price);
 // });
+
+import BooksList from './components/pages/BooksList';
+
+render(
+    <BooksList />,
+    document.getElementById('app')
+);
 
 // step 2 create and dispatch action
 store.dispatch(postBooks(
