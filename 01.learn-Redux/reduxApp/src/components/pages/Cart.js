@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { connect } from "react-redux";
-import { Panel, Col, Row, Well, Button, ButtonGroup, Label } from 'react-bootstrap';
+import { Modal, Panel, Col, Row, Well, Button, ButtonGroup, Label } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 
 import { deleteCartItem, updateCart } from '../../actions/cartActions';
@@ -10,10 +10,8 @@ import { deleteCartItem, updateCart } from '../../actions/cartActions';
 class Cart extends React.Component {
 
     onDelete(_id) {
-
         const currentBookToDelete = this.props.cart;
         const indexToDelete = currentBookToDelete.findIndex((cart) => cart._id === _id)
-
         let cartAfterDelete = [...currentBookToDelete.slice(0, indexToDelete),
             ...currentBookToDelete.slice(indexToDelete + 1)];
 
@@ -28,6 +26,20 @@ class Cart extends React.Component {
         if (quantity > 1) {
             this.props.updateCart(_id, -1);
         }
+    }
+    constructor() {
+        super();
+        this.state = {
+            showModal: false
+        }
+    }
+
+    open() {
+        this.setState({ showModal: true })
+    }
+
+    close() {
+        this.setState({ showModal: false })
     }
 
     render() {
@@ -75,6 +87,27 @@ class Cart extends React.Component {
                     <Panel.Title componentClass='h3'></Panel.Title>
                 </Panel.Heading>
                 { cartItemsList }
+                <Row>
+                    <Col xs={12}>
+                        <h6>Total Amount:</h6>
+                        <Button onClick={this.open.bind(this)} bsStyle='success' bsSize='small'>PROCEED TO CHECKOUT</Button>
+                    </Col>
+                </Row>
+                <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Thank you!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <h6>Your order has been saved</h6>
+                        <p> You will recieve an email confirmation</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Col xs={6}>
+                            <h6>total $:</h6>
+                        </Col>
+                        <Button onClick={this.close.bind(this)} bsStyle='primary' bsSize='small'>Close</Button>
+                    </Modal.Footer>
+                </Modal>
             </Panel>
         )
     }
