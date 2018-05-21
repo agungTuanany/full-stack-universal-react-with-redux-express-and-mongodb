@@ -79,4 +79,4 @@ function mapDispatchToProps(dispatch) {
     }, dispatch);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps) (BooksForm);
+export default connect(mapStateToProps, mapDispatchToProps)(BooksForm);

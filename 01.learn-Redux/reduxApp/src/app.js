@@ -4,7 +4,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-
+import { BrowserRouter as Router, Route, Switch, Redirect, browserHistory } from 'react-router-dom';
 import { applyMiddleware, createStore } from 'redux';
 import logger from 'redux-logger';
 
@@ -21,16 +21,29 @@ const store = createStore(reducers, middleware);
 
 // COMPONENT
 import BooksList from './components/pages/BooksList';
-import Menu from './components/Menu';
+import BooksForm from './components/pages/BooksForm';
+import Cart from './components/pages/Cart';
+import Menu from './components/Menu'
 import Footer from './components/Footer';
-render(
+
+const Routes = (
     <Provider store={store}>
-        <div>
-            <Menu />
-            <BooksList />
-            <Footer />
-        </div>
-    </Provider>,document.getElementById('app')
+        <Router history={browserHistory}>
+            <div>
+                <Menu />
+                <Switch>
+                    <Route exact path='/' component={BooksList}/>
+                    <Route path="/admin" component={BooksForm}/>
+                    <Route path="/cart" component={Cart}/>
+                </Switch>
+                <Footer />
+            </div>
+        </Router>
+    </Provider>
+)
+
+render(
+    Routes, document.getElementById('app')
 );
 
 // // step 2 create and dispatch action
