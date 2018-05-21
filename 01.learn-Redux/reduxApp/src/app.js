@@ -19,11 +19,17 @@ import { postBooks, deleteBooks, updateBooks } from './actions/booksActions';
 const middleware = applyMiddleware(logger);
 const store = createStore(reducers, middleware);
 
+// COMPONENT
 import BooksList from './components/pages/BooksList';
-
+import Menu from './components/Menu';
+import Footer from './components/Footer';
 render(
     <Provider store={store}>
-        <BooksList />
+        <div>
+            <Menu />
+            <BooksList />
+            <Footer />
+        </div>
     </Provider>,document.getElementById('app')
 );
 
