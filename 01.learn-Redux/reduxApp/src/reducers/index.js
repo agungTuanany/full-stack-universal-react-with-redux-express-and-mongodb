@@ -7,7 +7,7 @@ import { combineReducers } from 'redux';
 import { bookReducers } from './booksReducers';
 import { cartReducers } from './cartReducers';
 
-// HERE COMBINDE THE REDUCERS
+// HERE COMBINE THE REDUCERS
 export default combineReducers({
     books: bookReducers,
     cart: cartReducers

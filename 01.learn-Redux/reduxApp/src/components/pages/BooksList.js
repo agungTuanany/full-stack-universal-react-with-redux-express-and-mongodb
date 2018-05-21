@@ -13,19 +13,7 @@ import Cart from './Cart';
 class BooksList extends React.Component {
     componentDidMount() {
         // Dispatch an action
-        this.props.getBooks(
-            [{
-                id: 1,
-                title: 'this is book title',
-                description: 'this is the book description',
-                price: 55.33
-            }, {
-                id: 2,
-                title: 'this is the second book title',
-                description: 'this is the second book description',
-                price: 66
-            }]
-        );
+        this.props.getBooks();
     }
 
     render() {
@@ -47,7 +35,7 @@ class BooksList extends React.Component {
                     <Cart />
                 </Row>
                 <Row style={{marginTop:'15px'}}>
-                    <Col>
+                    <Col xs={12} sm={6}>
                         <BooksForm />
                     </Col>
                     { booksList }

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { connect } from "react-redux";
-import { Panel, Col, Row, Well, Button } from 'react-bootstrap';
+import { Panel, Col, Row, Well, Button, ButtonGroup, Label } from 'react-bootstrap';
 
 class Cart extends React.Component {
     render() {
@@ -21,17 +21,33 @@ class Cart extends React.Component {
     renderCart() {
         const cartItemsList = this.props.cart.map((cartArr) => {
             return(
-                <Panel key={cartArr.id}>
+                <Panel.Body key={cartArr.id}>
                     <Row>
                         <Col xs={12} sm={4}>
-                            <h6>{cartArr.title}</h6>
+                            <h6>{cartArr.title}</h6><span>    </span>
+                        </Col>
+                        <Col xs={12} sm={2}>
+                            <h6>usd. {cartArr.price}</h6>
+                        </Col>
+                        <Col xs={12} sm={2}>
+                            <h6>qty. <Label bsStyle='success'></Label></h6>
+                        </Col>
+                        <Col>
+                            <ButtonGroup>
+                                <Button bsStyle='default' bsSize='small'>-</Button>
+                                <Button bsStyle='default' bsSize='small'>+</Button>
+                                <Button bsStyle='danger' bsSize='small'>DELETE</Button>
+                            </ButtonGroup>
                         </Col>
                     </Row>
-                </Panel>
+                </Panel.Body>
             )
         })
         return (
-            <Panel header="Cart" bsStyle="primary">
+            <Panel bsStyle="primary">
+                <Panel.Heading>
+                    <Panel.Title componentClass='h3'></Panel.Title>
+                </Panel.Heading>
                 { cartItemsList }
             </Panel>
         )
