@@ -3,13 +3,28 @@
 import React from 'react';
 import { connect } from "react-redux";
 import { Panel, Col, Row, Well, Button, ButtonGroup, Label } from 'react-bootstrap';
+import { bindActionCreators } from 'redux';
+
+import { deleteCartItem } from '../../actions/cartActions';
 
 class Cart extends React.Component {
+
+    onDelete(_id) {
+
+        const currentBookToDelete = this.props.cart;
+        const indexToDelete = currentBookToDelete.findIndex((cart) => cart._id === _id)
+
+        let cartAfterDelete = [...currentBookToDelete.slice(0, indexToDelete),
+            ...currentBookToDelete.slice(indexToDelete + 1)];
+
+        this.props.deleteCartItem(cartAfterDelete);
+    }
+
     render() {
         if (this.props.cart[0]) {
             return this.renderCart();
         }
-            return this.renderEmpty();
+        return this.renderEmpty();
     }
 
     renderEmpty() {
@@ -36,13 +51,14 @@ class Cart extends React.Component {
                             <ButtonGroup>
                                 <Button bsStyle='default' bsSize='small'>-</Button>
                                 <Button bsStyle='default' bsSize='small'>+</Button>
-                                <Button bsStyle='danger' bsSize='small'>DELETE</Button>
+                                <span>    </span>
+                                <Button onClick={this.onDelete.bind(this, cartArr._id)} bsStyle='danger' bsSize='small'>DELETE</Button>
                             </ButtonGroup>
                         </Col>
                     </Row>
                 </Panel.Body>
             )
-        })
+        }, this) // this: to make sure onClick event it's in right context
         return (
             <Panel bsStyle="primary">
                 <Panel.Heading>
@@ -59,4 +75,9 @@ function mapStateToProps(state){
         cart: state.cart.cart
     }
 }
-export default connect(mapStateToProps)(Cart);
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ deleteCartItem }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);

@@ -1,6 +1,6 @@
 "use strict"
 
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Grid, Col, Row, Button } from 'react-bootstrap';
@@ -10,7 +10,7 @@ import BookItem from './BookItem';
 import BooksForm from './BooksForm';
 import Cart from './Cart';
 
-class BooksList extends React.Component {
+class BooksList extends Component {
     componentDidMount() {
         // Dispatch an action
         this.props.getBooks();

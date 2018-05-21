@@ -1,11 +1,11 @@
-import React from 'react';
+import React,{ Component } from 'react';
 import { Row, Col, Well, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { addToCart } from '../../actions/cartActions';
 
-class BookItem extends React.Component {
+class BookItem extends Component {
 
     handleCart() {
         const book = [...this.props.cart, {
