@@ -46,6 +46,18 @@ app.get('/books', (req, res) => {
     res.json(books);
   });
 });
+
+// --->>> DELETE BOOKS <<<----
+app.delete('/books/:_id', (req, res) => {
+  const query = { _id: req.params._id };
+
+  Books.remove(query, (err, books) => {
+    if(err) {
+      throw err;
+    }
+    res.json(books);
+  });
+});
 // END APIs
 
 // SET UP TO CATCH URL
