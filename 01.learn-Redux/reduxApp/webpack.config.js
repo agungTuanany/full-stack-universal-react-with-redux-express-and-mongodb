@@ -6,7 +6,7 @@ const webpack = require("webpack");
 
 module.exports = {
     mode: "none",
-    entry: "./src/app.js",
+    entry: ["babel-polyfill", "./src/client.js"],
     output: {
         filename: "bundle.js",
         path: path.resolve(__dirname, "public")

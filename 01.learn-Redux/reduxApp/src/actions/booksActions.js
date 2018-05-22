@@ -1,5 +1,7 @@
 "use strict"
 
+import axios from 'axios';
+
 // GET A BOOKS
 export function getBooks() {
     return {
@@ -8,10 +10,14 @@ export function getBooks() {
 }
 
 // POST A BOOK
-export function postBooks(book) {
-    return {
-        type: "POST_BOOK",
-        payload: book
+export const postBooks = (book) => async dispatch => {
+    try {
+        const res = await axios.post('/books', book);
+
+        dispatch({ type: "POST_BOOK", payload: res.data })
+    } catch (err) {
+        console.log(err);
+        dispatch({ type: "POST_BOOK_REJECTED", payload: "There was an error while posting a new book" })
     }
 }
 
