@@ -58,6 +58,33 @@ app.delete('/books/:_id', (req, res) => {
     res.json(books);
   });
 });
+
+// --->>> POST BOOKS <<<----
+app.put('/books/:_id', (req, res) => {
+  const book = req.body;
+  const query = req.params._id;
+  // IF THE FIELD DOESN'T EXIST $set WILL SET A NEW FIELD
+  const update = {
+    '$set': {
+      title: book.title,
+      description: book.description,
+      image: book.image,
+      price: book.price
+    }
+  };
+  // WHEN TRUE RETURN THE UPDATE DOCUMENT
+  const options = { new: true};
+
+  Books.findOneAndUpdate(query, update, options, (err, books) => {
+    if (err) {
+      throw err;
+    }
+    res.json(books);
+  });
+});
+
+
+
 // END APIs
 
 // SET UP TO CATCH URL
