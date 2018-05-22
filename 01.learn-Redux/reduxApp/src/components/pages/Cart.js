@@ -5,9 +5,12 @@ import { connect } from "react-redux";
 import { Modal, Panel, Col, Row, Well, Button, ButtonGroup, Label } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 
-import { deleteCartItem, updateCart } from '../../actions/cartActions';
+import { deleteCartItem, updateCart, getCart } from '../../actions/cartActions';
 
 class Cart extends React.Component {
+    componentDidMount() {
+        this.props.getCart();
+    }
 
     onDelete(_id) {
         const currentBookToDelete = this.props.cart;
@@ -123,7 +126,8 @@ function mapStateToProps(state){
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         deleteCartItem,
-        updateCart
+        updateCart,
+        getCart
     }, dispatch);
 }
 
