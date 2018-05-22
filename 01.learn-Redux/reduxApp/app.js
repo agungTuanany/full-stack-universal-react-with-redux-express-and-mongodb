@@ -36,6 +36,16 @@ app.post('/books', (req, res) => {
     res.json(books);
   });
 });
+
+// --->>> POST BOOKS <<<----
+app.get('/books', (req, res) => {
+  Books.find((err, books) => {
+    if (err) {
+      throw err;
+    }
+    res.json(books);
+  });
+});
 // END APIs
 
 // SET UP TO CATCH URL
