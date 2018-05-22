@@ -26,7 +26,7 @@ class BookItem extends Component {
                 this.props.addToCart(book);
             } else {
                 // WE NEED TO UPDATE QUANTITY
-                this.props.updateCart(_id, 1)
+                this.props.updateCart(_id, 1, this.props.cart);
             }
         }
         // CART IS EMPTY
