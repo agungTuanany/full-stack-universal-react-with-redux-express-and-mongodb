@@ -1,111 +1,48 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
+// PROXY
+const httpProxy = require('http-proxy');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
 
-// view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
+// PROXY TO API
+const apiProxy = httpProxy.createProxyServer({
+	target: 'http://localhost:3001'
+});
+
+app.use('/api', (req, res) => {
+	apiProxy.web(req, res);
+});
+// END PROXY
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-//APIs
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/bookshop');
-
-const Books = require('./models/books');
-
-// --->>> POST BOOKS <<<----
-app.post('/books', (req, res) => {
-  const book = req.body;
-
-  Books.create(book, (err, books) => {
-    if (err) {
-      throw err;
-    }
-    res.json(books);
-  });
-});
-
-// --->>> POST BOOKS <<<----
-app.get('/books', (req, res) => {
-  Books.find((err, books) => {
-    if (err) {
-      throw err;
-    }
-    res.json(books);
-  });
-});
-
-// --->>> DELETE BOOKS <<<----
-app.delete('/books/:_id', (req, res) => {
-  const query = { _id: req.params._id };
-
-  Books.remove(query, (err, books) => {
-    if(err) {
-      throw err;
-    }
-    res.json(books);
-  });
-});
-
-// --->>> POST BOOKS <<<----
-app.put('/books/:_id', (req, res) => {
-  const book = req.body;
-  const query = req.params._id;
-  // IF THE FIELD DOESN'T EXIST $set WILL SET A NEW FIELD
-  const update = {
-    '$set': {
-      title: book.title,
-      description: book.description,
-      image: book.image,
-      price: book.price
-    }
-  };
-  // WHEN TRUE RETURN THE UPDATE DOCUMENT
-  const options = { new: true};
-
-  Books.findOneAndUpdate(query, update, options, (err, books) => {
-    if (err) {
-      throw err;
-    }
-    res.json(books);
-  });
-});
-
-
-
-// END APIs
 
 // SET UP TO CATCH URL
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+	res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
+	next(createError(404));
 });
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+	// set locals, only providing error in development
+	res.locals.message = err.message;
+	res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+	// render the error page
+	res.status(err.status || 500);
+	res.render('error');
 });
 
 module.exports = app;
