@@ -1,23 +1,10 @@
 "user strict"
 
 // BOOK REDUCERS
-export function bookReducers(state = {
-    books:
-        [{
-            _id: 1,
-            title: 'this is book title',
-            description: 'this is the book description',
-            price: 55.33
-        }, {
-            _id: 2,
-            title: 'this is the second book title',
-            description: 'this is the second book description',
-            price: 66
-        }]
-    }, action) {
+export function bookReducers(state = { books: [] }, action) {
     switch (action.type) {
         case "GET_BOOKS":
-        return { ...state, books: [...state.books] }
+        return { ...state, books: [...action.payload] }
         break;
 
         case "POST_BOOK":

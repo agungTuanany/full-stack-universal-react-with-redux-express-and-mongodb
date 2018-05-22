@@ -3,9 +3,14 @@
 import axios from 'axios';
 
 // GET A BOOKS
-export function getBooks() {
-    return {
-        type: "GET_BOOKS",
+export const getBooks = ()  => async dispatch => {
+    try {
+        const res = await axios.get('/books');
+
+        dispatch({ type: "GET_BOOKS", payload: res.data });
+    } catch (err) {
+        dispatch({ type: "GET_BOOKS_REJECTED", payload: err });
+        console.log(err);
     }
 }
 
@@ -16,17 +21,21 @@ export const postBooks = (book) => async dispatch => {
 
         dispatch({ type: "POST_BOOK", payload: res.data })
     } catch (err) {
-        console.log(err);
         dispatch({ type: "POST_BOOK_REJECTED", payload: "There was an error while posting a new book" })
+        console.log(err);
     }
 }
 
 // DELETE A BOOK
-export function deleteBooks(id) {
-    return {
-        type: "DELETE_BOOK",
-        payload: id
-    }
+export const deleteBooks = (id) => async dispatch => {
+        try {
+            const res = await axios.delete('/books/' + id);
+
+            dispatch({ type: "DELETE_BOOK", payload: id });
+        } catch (err) {
+            dispatch({ tpe: "DELETE_BOOK_REJECTED", payload: err });
+            console.log(err)
+        }
 }
 
 // UPDATE A BOOK
