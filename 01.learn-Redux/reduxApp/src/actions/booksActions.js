@@ -45,3 +45,10 @@ export function updateBooks(book) {
         payload: book
     }
 }
+
+// RESET A BOOK
+export const resetButton = () => {
+    return {
+        type: "RESET_BUTTON"
+    }
+}

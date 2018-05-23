@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import { findDOMNode } from 'react-dom';
 import axios from 'axios';
 
-import { postBooks, deleteBooks, getBooks } from '../../actions/booksActions';
+import { postBooks, deleteBooks, getBooks, resetButton } from '../../actions/booksActions';
 import formFields from './formFields';
 
 class BooksForm extends Component {
@@ -20,7 +20,7 @@ class BooksForm extends Component {
     }
 
     async componentDidMount() {
-        this.props.getBooks
+        this.props.getBooks();
         try{
             const res = await axios.get('/api/images');
             await this.setState({ images: res.data });
@@ -34,6 +34,7 @@ class BooksForm extends Component {
         const book= [{
             title: findDOMNode(this.refs.title).value,
             description: findDOMNode(this.refs.description).value,
+            images: findDOMNode(this.refs.image).value,
             price: findDOMNode(this.refs.price).value
         }]
         this.props.postBooks(book);
@@ -49,6 +50,16 @@ class BooksForm extends Component {
         this.setState({
             img: '/images/' + img
         })
+    }
+
+    resetForm() {
+        // RESET THE Button
+        this.props.resetButton();
+
+        findDOMNode(this.refs.title).value = '';
+        findDOMNode(this.refs.description).value = '';
+        findDOMNode(this.refs.price).value = '';
+        this.setState({ img: '' });
     }
 
     renderFields() {
@@ -73,7 +84,7 @@ class BooksForm extends Component {
 
         const imgList = this.state.images.map((imgArr, i) => {
             return <MenuItem
-                Key={i}
+                key={i}
                 eventKey={imgArr.name}
                 onClick={this.handleSelect.bind(this, imgArr.name)}
             >
@@ -102,7 +113,11 @@ class BooksForm extends Component {
                     <Col xs={12} sm={6}>
                         <Panel>
                             {this.renderFields()}
-                            <Button onClick={this.handleSubmit.bind(this)} bsStyle='primary'>Save Book</Button>
+                            <Button
+                                onClick={(!this.props.msg)?(this.handleSubmit.bind(this)):(this.resetForm.bind(this))}
+                                bsStyle={(!this.props.style)?('primary'):(this.props.style)}>
+                                { (!this.props.msg)?('Save book'):(this.props.msg) }
+                            </Button>
                         </Panel>
                         <Panel sytle={{marginTop:'25px'}}>
                             <FormGroup controlId='formControlsSelect'>
@@ -123,7 +138,9 @@ class BooksForm extends Component {
 
 function mapStateToProps(state) {
     return {
-        books: state.books.books
+        books: state.books.books,
+        msg: state.books.msg,
+        style: state.books.style
     }
 }
 
@@ -131,7 +148,8 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         postBooks,
         deleteBooks,
-        getBooks
+        getBooks,
+        resetButton
     }, dispatch);
 };
 
