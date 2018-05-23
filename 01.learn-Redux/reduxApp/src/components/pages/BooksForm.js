@@ -65,13 +65,14 @@ class BooksForm extends Component {
     renderFields() {
         return _.map(formFields, ({ controlId, placeholder, ref }) => {
             return (
-                <FormGroup key={controlId} controlId={controlId}>
+                <FormGroup controlId={controlId} validationState={this.props.validation}>
                 <ControlLabel>{controlId}</ControlLabel>
                     <FormControl
                         type='text'
                         placeholder={placeholder}
                         ref={ref}
                     />
+                    <FormControl.Feedback />
             </FormGroup>
             );
         });
@@ -112,7 +113,7 @@ class BooksForm extends Component {
                     </Col>
                     <Col xs={12} sm={6}>
                         <Panel>
-                            {this.renderFields()}
+                            { this.renderFields() }
                             <Button
                                 onClick={(!this.props.msg)?(this.handleSubmit.bind(this)):(this.resetForm.bind(this))}
                                 bsStyle={(!this.props.style)?('primary'):(this.props.style)}>
@@ -140,7 +141,8 @@ function mapStateToProps(state) {
     return {
         books: state.books.books,
         msg: state.books.msg,
-        style: state.books.style
+        style: state.books.style,
+        validation: state.books.validation
     }
 }
 
