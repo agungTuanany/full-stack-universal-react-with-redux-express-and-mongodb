@@ -1,15 +1,35 @@
 "user strict"
 import _ from 'lodash';
 import React, { Component } from 'react';
-import { Well, Panel, FormControl, FormGroup, ControlLabel, Button } from 'react-bootstrap';
+import { MenuItem, InputGroup, DropdownButton, Image, Col, Row ,Well, Panel, FormControl, FormGroup, ControlLabel, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { findDOMNode } from 'react-dom';
+import axios from 'axios';
 
-import { postBooks, deleteBooks } from '../../actions/booksActions';
+import { postBooks, deleteBooks, getBooks } from '../../actions/booksActions';
 import formFields from './formFields';
 
 class BooksForm extends Component {
+    constructor() {
+        super();
+        this.state = {
+            images: [{}],
+            img: ''
+        }
+    }
+
+    async componentDidMount() {
+        this.props.getBooks
+        try{
+            const res = await axios.get('/api/images');
+            await this.setState({ images: res.data });
+        } catch (err) {
+            await this.setState({ images: "ERROR loading image take from the server", img: '' });
+            console.log(err);
+        }
+    }
+
     handleSubmit() {
         const book= [{
             title: findDOMNode(this.refs.title).value,
@@ -23,6 +43,12 @@ class BooksForm extends Component {
         let bookId = findDOMNode(this.refs.delete).value;
 
         this.props.deleteBooks(bookId);
+    }
+
+    handleSelect(img) {
+        this.setState({
+            img: '/images/' + img
+        })
     }
 
     renderFields() {
@@ -45,22 +71,51 @@ class BooksForm extends Component {
             (booksArr) => <option key={booksArr._id}>{ booksArr._id }</option>
         );
 
+        const imgList = this.state.images.map((imgArr, i) => {
+            return <MenuItem
+                Key={i}
+                eventKey={imgArr.name}
+                onClick={this.handleSelect.bind(this, imgArr.name)}
+            >
+            { imgArr.name }
+            </MenuItem>
+        }, this)
+
         return(
             <Well>
-                <Panel>
-                    {this.renderFields()}
-                    <Button onClick={this.handleSubmit.bind(this)} bsStyle='primary'>Save Book</Button>
-                </Panel>
-                <Panel sytle={{marginTop:'25px'}}>
-                    <FormGroup controlId='formControlsSelect'>
-                        <ControlLabel>Select a book id to delete</ControlLabel>
-                        <FormControl ref='delete' componentClass='select' placeholder='select'>
-                            <option value='select'>select</option>
-                            { booksList }
-                        </FormControl>
-                    </FormGroup>
-                    <Button onClick={this.onDelete.bind(this)} bsStyle='danger' bsSize='small'>Delete book</Button>
-                </Panel>
+                <Row>
+                    <Col xs={12} sm={6}>
+                        <Panel>
+                            <InputGroup>
+                                <FormControl type='text' ref='image' value={this.state.img} />
+                                <DropdownButton
+                                    componentClass={InputGroup.Button}
+                                    id='input-dropdown-addon'
+                                    title='Select an image'
+                                    bsStyle='primary'
+                                >
+                                    { imgList }
+                                </DropdownButton>
+                            </InputGroup>
+                        </Panel>
+                    </Col>
+                    <Col xs={12} sm={6}>
+                        <Panel>
+                            {this.renderFields()}
+                            <Button onClick={this.handleSubmit.bind(this)} bsStyle='primary'>Save Book</Button>
+                        </Panel>
+                        <Panel sytle={{marginTop:'25px'}}>
+                            <FormGroup controlId='formControlsSelect'>
+                                <ControlLabel>Select a book id to delete</ControlLabel>
+                                <FormControl ref='delete' componentClass='select' placeholder='select'>
+                                    <option value='select'>select</option>
+                                    { booksList }
+                                </FormControl>
+                            </FormGroup>
+                            <Button onClick={this.onDelete.bind(this)} bsStyle='danger' bsSize='small'>Delete book</Button>
+                        </Panel>
+                    </Col>
+                </Row>
             </Well>
         )
     }
@@ -75,7 +130,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
         postBooks,
-        deleteBooks
+        deleteBooks,
+        getBooks
     }, dispatch);
 };
 
