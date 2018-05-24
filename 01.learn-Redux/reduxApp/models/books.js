@@ -1,6 +1,6 @@
-"use strict"
+"use strict";
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const booksSchema = mongoose.Schema({
     title: String,
@@ -9,6 +9,6 @@ const booksSchema = mongoose.Schema({
     price: Number
 });
 
-const Books = mongoose.model('Books', booksSchema);
+const Books = mongoose.model("Books", booksSchema);
 
 module.exports = Books;

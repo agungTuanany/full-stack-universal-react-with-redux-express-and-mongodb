@@ -1,26 +1,32 @@
-import React,{ Component } from 'react';
-import { Image ,Row, Col, Well, Button } from 'react-bootstrap';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React, { Component } from "react";
+import { Image, Row, Col, Well, Button } from "react-bootstrap";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
-import { deleteCartItem, addToCart, updateCart } from '../../actions/cartActions';
+import {
+    deleteCartItem,
+    addToCart,
+    updateCart
+} from "../../actions/cartActions";
 
 class BookItem extends Component {
-
     handleCart() {
-        const book = [...this.props.cart, {
-            _id: this.props._id,
-            title: this.props.title,
-            description: this.props.description,
-            images: this.props.images,
-            price: this.props.price,
-            quantity: 1
-        }]
+        const book = [
+            ...this.props.cart,
+            {
+                _id: this.props._id,
+                title: this.props.title,
+                description: this.props.description,
+                images: this.props.images,
+                price: this.props.price,
+                quantity: 1
+            }
+        ];
         // CHECK IF CART IS EMPTY
         if (this.props.cart.length > 0) {
             // CART IS NOT EMPTY
             let _id = this.props._id;
-            let cartIndex = this.props.cart.findIndex((cart) => cart._id === _id);
+            let cartIndex = this.props.cart.findIndex(cart => cart._id === _id);
 
             // IF RETURNS -1 THERE ARE NO ITEMS WITH SAME ID
             if (cartIndex === -1) {
@@ -35,36 +41,44 @@ class BookItem extends Component {
     }
 
     render() {
-        return(
+        return (
             <Well>
                 <Row>
                     <Col>
-                        <Image src={this.props.images} responsive/>
+                        <Image src={this.props.images} responsive />
                     </Col>
                     <Col xs={6} sm={8}>
-                        <h6>{ this.props.title}</h6>
-                        <p>{ this.props.description }</p>
-                        <h6>usd. { this.props.price }</h6>
-                        <Button onClick={this.handleCart.bind(this)} bsStyle='primary'>Buy Now</Button>
+                        <h6>{this.props.title}</h6>
+                        <p>{this.props.description}</p>
+                        <h6>usd. {this.props.price}</h6>
+                        <Button
+                            onClick={this.handleCart.bind(this)}
+                            bsStyle="primary"
+                        >
+                            Buy Now
+                        </Button>
                     </Col>
                 </Row>
             </Well>
-        )
+        );
     }
 }
 
 function mapStateToProps(state) {
     return {
         cart: state.cart.cart
-    }
+    };
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({
-        deleteCartItem,
-        addToCart,
-        updateCart
-    }, dispatch);
-};
+    return bindActionCreators(
+        {
+            deleteCartItem,
+            addToCart,
+            updateCart
+        },
+        dispatch
+    );
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookItem);
