@@ -30,7 +30,7 @@ export function cartReducers(state = { cart: [] }, action) {
             };
             break;
 
-        case "DELET_CART_ITEM":
+        case "DELETE_CART_ITEM":
             return {
                 ...state,
                 cart: action.payload,
