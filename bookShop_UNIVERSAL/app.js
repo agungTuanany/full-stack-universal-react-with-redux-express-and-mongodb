@@ -1,3 +1,8 @@
+require("babel-core/register")({
+    presets: ["env", "react", "stage-1"]
+});
+require("babel-polyfill");
+
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
@@ -6,8 +11,8 @@ var logger = require("morgan");
 // PROXY
 const httpProxy = require("http-proxy");
 
-var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
+// REQUEST HANDLER FOR SERVER-SIDE RENDERING
+var requestHandler = require("./requestHandler.js");
 
 var app = express();
 
@@ -24,10 +29,10 @@ app.use("/api", (req, res) => {
 app.use(logger("dev"));
 app.use(express.static(path.join(__dirname, "public")));
 
-// SET UP TO CATCH URL
-app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "public", "index.html"));
-});
+// SET UP EJS TO BE TEMPLATE ENGINE
+app.set("view engine", "ejs");
+
+app.use(requestHandler);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
