@@ -9,6 +9,7 @@ import { getBooks } from "../../actions/booksActions";
 import BookItem from "./BookItem";
 import BooksForm from "./BooksForm";
 import Cart from "./Cart";
+import BooksCarousel from "./BooksCarousel";
 
 class BooksList extends Component {
     componentDidMount() {
@@ -32,6 +33,9 @@ class BooksList extends Component {
         });
         return (
             <Grid>
+                <Row style={{ margin: "0 160px", padding: "30px 110px" }}>
+                    <BooksCarousel />
+                </Row>
                 <Row>
                     <Cart />
                 </Row>

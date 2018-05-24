@@ -21,6 +21,10 @@ module.exports = {
                 query: {
                     presets: ["env", "react", "stage-1"]
                 }
+            },
+            {
+                test: /\.css$/,
+                use: ["style-loader", "css-loader"]
             }
         ]
     }

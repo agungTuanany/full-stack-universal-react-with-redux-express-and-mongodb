@@ -27,6 +27,7 @@ import {
     resetButton
 } from "../../actions/booksActions";
 import formFields from "./formFields";
+import BooksCarousel from "./BooksCarousel";
 
 class BooksForm extends Component {
     constructor() {
@@ -142,6 +143,7 @@ class BooksForm extends Component {
                                     {imgList}
                                 </DropdownButton>
                             </InputGroup>
+                            <Image src={this.state.img} responsive />
                         </Panel>
                     </Col>
                     <Col xs={12} sm={6}>
