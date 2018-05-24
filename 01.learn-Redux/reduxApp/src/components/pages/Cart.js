@@ -13,7 +13,6 @@ import {
     Label
 } from "react-bootstrap";
 import { bindActionCreators } from "redux";
-
 import { deleteCartItem, updateCart, getCart } from "../../actions/cartActions";
 
 class Cart extends React.Component {
